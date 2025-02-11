@@ -193,8 +193,6 @@ module Paraspec
     end
 
     def dump_summary
-      reporter.stop
-
       all_examples = RSpecFacade.all_examples
       notification = RSpec::Core::Notifications::SummaryNotification.new(
         @start_time ? Time.now-@start_time : 0,
@@ -205,6 +203,11 @@ module Paraspec
         non_example_exception_count,
       )
       examples_notification = RSpec::Core::Notifications::ExamplesNotification.new(reporter)
+      if reporter.method(:stop).arity == 1
+        reporter.stop(examples_notification) # rspec-core 3.13.3+
+      else
+        reporter.stop
+      end
       RSpec.configuration.formatters.each do |f|
         if f.respond_to?(:dump_summary)
           f.dump_summary(notification)

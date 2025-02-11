@@ -197,7 +197,7 @@ module Paraspec
       # This method is called when handling exceptions - only dump summary once
       unless @summary_dumped
         master_client.reconnect!
-        puts "dumping summary"
+        # puts "dumping summary"
         master_client.request('dump_summary')
 
         @summary_dumped = true
