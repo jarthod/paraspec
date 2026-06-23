@@ -145,6 +145,10 @@ module Paraspec
       reporter.example_started(example)
     end
 
+    def notify_message(payload)
+      reporter.message(payload[:message])
+    end
+
     def do_example_passed(spec, execution_result)
     #return
       example = find_example(spec)

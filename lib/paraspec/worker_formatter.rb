@@ -49,6 +49,12 @@ module Paraspec
     def method_missing(m, args)
     end
 
+    def message(notification)
+      # Forward arbitrary messages (e.g. rspec-retry verbose retry status)
+      # to the master so they end up in the real reporter output.
+      @master_client.request('notify_message', message: notification.message, _noret: true)
+    end
+
     def example_started(notification)
       spec = {
         file_path: notification.example.metadata[:rerun_file_path],
